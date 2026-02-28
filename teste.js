@@ -1,5 +1,6 @@
 import { Usuario } from "./src/models/usuarios.js";
 import { pool } from "./DB/conexao.js";
+import { Livros } from "./src/livros.js";
 
 async function rodarTeste() {
   try {
@@ -50,3 +51,43 @@ async function rodarTesteDelete() {
 
 // rodarTesteDelete();
 // rodarTeste();
+
+async function RodarTesteLivrosCriar() {
+  try {
+    console.log("Criando livro...");
+
+    const adicionarLivro = await Livros.criarLivro(
+      "Olhinohs",
+      "Marcos",
+      2018,
+      10,
+    );
+
+    console.log("Livro criado: ", adicionarLivro);
+
+    const todosLivros = await Livros.listarTodos();
+    console.table(todosLivros);
+  } catch (erro) {
+    console.error("Error no teste: ", erro);
+  } finally {
+    await pool.end();
+  }
+}
+
+// RodarTesteLivrosCriar();
+
+async function RodarTesteLivrosDeletar() {
+  try {
+    const livroDeletado = await Livros.deletarLivro(1);
+    console.log("Livro deletado: ", livroDeletado);
+
+    const todosLivros = await Livros.listarTodos();
+    console.table(todosLivros);
+  } catch (erro) {
+    console.error("Error no teste: ", erro);
+  } finally {
+    await pool.end();
+  }
+}
+
+// RodarTesteLivrosDeletar();
