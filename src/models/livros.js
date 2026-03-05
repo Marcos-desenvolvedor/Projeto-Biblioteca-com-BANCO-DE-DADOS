@@ -1,4 +1,4 @@
-import { pool } from "../DB/conexao.js";
+import { pool } from "../../DB/conexao.js";
 
 export class Livros {
   // 1. LISTAR TODOS OS LIVROS
