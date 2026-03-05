@@ -3,9 +3,10 @@ import { pool } from "../../DB/conexao.js";
 export class Emprestimos {
   static async realizarEmprestimo(id_usuario, id_livro) {
     try {
-      const livro = await pool.query("SELECT quantidade FROM livros id= $1", [
-        id_livro,
-      ]);
+      const livro = await pool.query(
+        "SELECT quantidade FROM livros WHERE id= $1",
+        [id_livro],
+      );
 
       if (livro.rows[0].quantidade <= 0) {
         throw new Error("Livro sem estoque");
@@ -30,9 +31,18 @@ export class Emprestimos {
   }
 
   static async listarTudo() {
-
-
-
-    
+    const sql = `
+            SELECT 
+                e.id, 
+                u.nome AS usuario, 
+                l.titulo AS livro, 
+                e.data_emprestimo
+            FROM emprestimos e
+            JOIN usuarios u ON e.id_usuario = u.id
+            JOIN livros l ON e.id_livro = l.id
+            ORDER BY e.data_emprestimo DESC
+        `;
+    const res = await pool.query(sql);
+    return res.rows;
   }
 }

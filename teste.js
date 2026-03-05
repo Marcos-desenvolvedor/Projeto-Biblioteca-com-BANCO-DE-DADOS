@@ -1,6 +1,7 @@
 import { Usuario } from "./src/models/usuarios.js";
 import { pool } from "./DB/conexao.js";
-import { Livros } from "./src/livros.js";
+import { Livros } from "./src/models/livros.js";
+import { Emprestimos } from "./src/models/emprestimo.js";
 
 async function rodarTeste() {
   try {
@@ -91,3 +92,15 @@ async function RodarTesteLivrosDeletar() {
 }
 
 // RodarTesteLivrosDeletar();
+
+async function testarEmprestimo() {
+  console.log("Tentando realizar empréstimo...");
+
+  const emp = await Emprestimos.realizarEmprestimo(3, 2);
+  console.log("Sucesso:", emp);
+
+  const lista = await Emprestimos.listarTudo();
+  console.table(lista);
+}
+
+testarEmprestimo();
